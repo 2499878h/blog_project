@@ -210,7 +210,7 @@ class UserControl(View):
         imgData = base64.b64decode(data)
 
         filename = "Avatar_100x100_{}.jpg".format(request.user.id)
-        filedir = "vmaig_auth/static/Avatar/"
+        filedir = "tango_auth/static/Avatar/"
         static_root = getattr(settings, 'STATIC_ROOT', None)
         debug = getattr(settings, 'DEBUG', None)
         if static_root and not debug:

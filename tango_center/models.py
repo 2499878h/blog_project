@@ -96,29 +96,6 @@ class Article(models.Model):
     __str__ = __unicode__
 
 
-class Column(models.Model):
-    name = models.CharField(max_length=40, verbose_name='column content')
-    summary = models.TextField(verbose_name='summary')
-    article = models.ManyToManyField(Article, verbose_name='article')
-    status = models.IntegerField(default=0, choices=STATUS.items(),
-                                 verbose_name='status')
-    create_time = models.DateTimeField('creat_time',
-                                       auto_now_add=True)
-
-    class Meta:
-        verbose_name_plural = verbose_name = 'column'
-        ordering = ['-create_time']
-        app_label = 'Blog Management'
-
-    def get_absolute_url(self):
-        return reverse('column-detail-view', args=(self.name,))
-
-    def __unicode__(self):
-        return self.name
-
-    __str__ = __unicode__
-
-
 class Carousel(models.Model):
     title = models.CharField(max_length=100, verbose_name='title')
     summary = models.TextField(blank=True, null=True, verbose_name='summary')

@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tango_center',
+    'tango_auth',
+    'tango_comments',
+    'compressor'
 ]
 
 MIDDLEWARE = [
@@ -76,7 +80,7 @@ WSGI_APPLICATION = 'tango_blog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../test.db'),
     }
 }
 
@@ -118,3 +122,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+
+# AUTH_USER_MODEL = "tango_auth.TangoUser"
+
+PAGE_NUM = 5
+
+WEBSITE_TITLE = 'Tango-Blog'
+WEBSITE_WELCOME = 'Welcome to tango blog'
+
+COMPRESS_ROOT = BASE_DIR + "/static/"
