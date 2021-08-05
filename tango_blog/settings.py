@@ -25,7 +25,7 @@ SECRET_KEY = '!1z7^lw$ftbb4ndcp#)_@w@pudpm7-@ewbtf6of+u8==wpuj@y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tango_center',
     'tango_auth',
+    'tango_center',
     'tango_comments',
     'compressor'
 ]
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'tango_blog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, '../test.db'),
+        'NAME': os.path.join(BASE_DIR, 'test.db')
     }
 }
 
@@ -122,12 +122,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
-
-# AUTH_USER_MODEL = "tango_auth.TangoUser"
 
 PAGE_NUM = 5
 
@@ -135,3 +135,11 @@ WEBSITE_TITLE = 'Tango-Blog'
 WEBSITE_WELCOME = 'Welcome to tango blog'
 
 COMPRESS_ROOT = BASE_DIR + "/static/"
+
+AUTH_USER_MODEL = 'tango_auth.TangoUser'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)

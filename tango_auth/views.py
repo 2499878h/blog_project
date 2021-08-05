@@ -33,8 +33,6 @@ class UserControl(View):
             return self.logout(request)
         elif slug == "changepassword":
             return self.changepassword(request)
-        elif slug == "forgetpassword":
-            return self.forgetpassword(request)
         elif slug == "register":
             return self.register(request)
         elif slug == "changeAvatar":
@@ -83,30 +81,11 @@ class UserControl(View):
         errors = []
         # valid form data
         if form.is_valid():
-            current_site = get_current_site(request)
-            site_name = current_site.name
-            domain = current_site.domain
-            title = "Welcome to {} ！".format(site_name)
-            message = "".join([
-                "Hello, {} \n\n".format(username),
-                "Remember：\n",
-                "username：{}\n".format(username),
-                "email：{}\n".format(email),
-                "site：http://{}\n\n".format(domain),
-            ])
-            from_email = None
-            try:
-                send_mail(title, message, from_email, [email])
-            except Exception as e:
-                return HttpResponse("send email fail!\n", status=500)
-
-            new_user = form.save()
+            form.save()
             user = auth.authenticate(username=username, password=password2)
             auth.login(request, user)
-
         else:
             for k, v in form.errors.items():
-                # error info
                 errors.append(v.as_text())
         mydict = {"errors": errors}
         return HttpResponse(
@@ -126,34 +105,6 @@ class UserControl(View):
         if form.is_valid():
             user = form.save()
             auth.logout(request)
-        else:
-            for k, v in form.errors.items():
-                errors.append(v.as_text())
-
-        mydict = {"errors": errors}
-        return HttpResponse(
-            json.dumps(mydict),
-            content_type="application/json"
-        )
-
-    def forgetpassword(self, request):
-        username = self.request.POST.get("username", "")
-        email = self.request.POST.get("email", "")
-
-        form = TangoPasswordRestForm(request.POST)
-
-        errors = []
-
-        if form.is_valid():
-            token_generator = default_token_generator
-            from_email = None
-            opts = {
-                    'token_generator': token_generator,
-                    'from_email': from_email,
-                    'request': request,
-                   }
-            user = form.save(**opts)
-
         else:
             for k, v in form.errors.items():
                 errors.append(v.as_text())

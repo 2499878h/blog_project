@@ -20,7 +20,7 @@ from django.urls import include, re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'', include('tango_center.urls')),
+    re_path(r'', include('tango_auth.urls')),
     re_path(r'', include('tango_comments.urls')),
     re_path(r'', include('tango_center.urls')),
 ]

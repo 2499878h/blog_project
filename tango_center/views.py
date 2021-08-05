@@ -1,23 +1,13 @@
 from django import template
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
-from django.template import Context, loader
-from django.views.generic import View, TemplateView, ListView, DetailView
+from django.template import loader
+from django.views.generic import TemplateView, ListView, DetailView
 from django.db.models import Q
-from django.core.cache import caches
 from django.core.exceptions import PermissionDenied
-from django.core.cache.backends.base import InvalidCacheBackendError
-from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
-from django.contrib.auth.tokens import default_token_generator
 from tango_center.models import Article, Category, Carousel, Nav
-from tango_comments.models import Comment
-from tango_auth.models import TangoUser
-from tango_auth.forms import TangoUserCreationForm, TangoPasswordRestForm
 from django.conf import settings
-import datetime
-import time
 import json
-import logging
 
 
 class BaseMixin(object):
@@ -38,7 +28,7 @@ class BaseMixin(object):
             colors = ['primary', 'success', 'info', 'warning', 'danger']
             for index, link in enumerate(context['links']):
                 link.color = colors[index % len(colors)]
-     
+
         except Exception as e:
             print(e)
 
@@ -48,7 +38,7 @@ class BaseMixin(object):
 class IndexView(BaseMixin, ListView):
     template_name = 'blog/index.html'
     context_object_name = 'article_list'
-    paginate_by = settings.PAGE_NUM  
+    paginate_by = settings.PAGE_NUM
 
     def get_context_data(self, **kwargs):
         # carousel
@@ -67,7 +57,7 @@ class ArticleView(BaseMixin, DetailView):
     slug_field = 'title'
 
     def get(self, request, *args, **kwargs):
-        # 统计文章的访问访问次数
+        # count read times
         if 'HTTP_X_FORWARDED_FOR' in request.META:
             ip = request.META['HTTP_X_FORWARDED_FOR']
         else:
@@ -75,7 +65,7 @@ class ArticleView(BaseMixin, DetailView):
         self.cur_user_ip = ip
 
         title = self.kwargs.get('slug')
-        
+
         # add view tiems
         article = self.queryset.get(title=title)
         article.view_times += 1
@@ -180,57 +170,51 @@ class SearchView(BaseMixin, ListView):
         return article_list
 
 
-# class TagView(BaseMixin, ListView):
-#     template_name = 'blog/tag.html'
-#     context_object_name = 'article_list'
-#     paginate_by = settings.PAGE_NUM
-#
-#     def get_queryset(self):
-#         tag = self.kwargs.get('tag', '')
-#         article_list = \
-#             Article.objects.only('tags').filter(tags__icontains=tag, status=0)
-#
-#         return article_list
+class TagView(BaseMixin, ListView):
+    template_name = 'blog/tag.html'
+    context_object_name = 'article_list'
+    paginate_by = settings.PAGE_NUM
+
+    def get_queryset(self):
+        tag = self.kwargs.get('tag', '')
+        article_list = \
+            Article.objects.only('tags').filter(tags__icontains=tag, status=0)
+
+        return article_list
 
 
-# class CategoryView(BaseMixin, ListView):
-#     template_name = 'blog/category.html'
-#     context_object_name = 'article_list'
-#     paginate_by = settings.PAGE_NUM
-#
-#     def get_queryset(self):
-#         category = self.kwargs.get('category', '')
-#         try:
-#             article_list = \
-#                 Category.objects.get(name=category).article_set.all()
-#         except Category.DoesNotExist:
-#             raise Http404
-#
-#         return article_list
+class CategoryView(BaseMixin, ListView):
+    template_name = 'blog/category.html'
+    context_object_name = 'article_list'
+    paginate_by = settings.PAGE_NUM
+
+    def get_queryset(self):
+        category = self.kwargs.get('category', '')
+        try:
+            article_list = \
+                Category.objects.get(name=category).article_set.all()
+        except Category.DoesNotExist:
+            raise Http404
+
+        return article_list
 
 
-# class UserView(BaseMixin, TemplateView):
-#     template_name = 'blog/user.html'
-#
-#     def get(self, request, *args, **kwargs):
-#
-#         if not request.user.is_authenticated:
-#             return render(request, 'blog/login.html')
-#
-#         slug = self.kwargs.get('slug')
-#
-#         if slug == 'changetx':
-#             self.template_name = 'blog/user_changeAvatar.html'
-#         elif slug == 'changepassword':
-#             self.template_name = 'blog/user_changepassword.html'
-#         elif slug == 'changeinfo':
-#             self.template_name = 'blog/user_changeinfo.html'
-#         elif slug == 'message':
-#             self.template_name = 'blog/user_message.html'
-#         elif slug == 'notification':
-#             self.template_name = 'blog/user_notification.html'
-#
-#         return super(UserView, self).get(request, *args, **kwargs)
+class UserView(BaseMixin, TemplateView):
+    # template_name = 'blog/user.html'
+
+    def get(self, request, *args, **kwargs):
+
+        if not request.user.is_authenticated:
+            return render(request, 'blog/login.html')
+
+        slug = self.kwargs.get('slug')
+
+        if slug == 'changeAvatar':
+            self.template_name = 'blog/user_changeAvatar.html'
+        elif slug == 'changepassword':
+            self.template_name = 'blog/user_changepassword.html'
+
+        return super(UserView, self).get(request, *args, **kwargs)
 
 
 

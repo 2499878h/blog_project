@@ -7,8 +7,6 @@ from django.core.mail import send_mail
 import base64
 import logging
 
-logger = logging.getLogger(__name__)
-
 
 class TangoUserCreationForm(forms.ModelForm):
 

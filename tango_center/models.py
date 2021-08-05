@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 from django.urls import reverse
 
 
@@ -22,7 +21,7 @@ class Nav(models.Model):
     class Meta:
         verbose_name_plural = verbose_name = "nav"
         ordering = ['-create_time']
-        app_label = "Blog Management"
+        app_label = "tango_center"
 
     def __unicode__(self):
         return self.name
@@ -43,7 +42,7 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = verbose_name = 'category'
         ordering = ['rank', '-create_time']
-        app_label = "Blog Management"
+        app_label = "tango_center"
 
     def get_absolute_url(self):
         return reverse('category-detail-view', args=(self.name,))
@@ -58,7 +57,7 @@ class Category(models.Model):
 
 
 class Article(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='author', on_delete=models.DO_NOTHING)
+    author = models.ForeignKey("tango_auth.TangoUser", verbose_name='author', on_delete=models.DO_NOTHING)
     category = models.ForeignKey(Category, verbose_name='category', on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=100, verbose_name='title')
     img = models.CharField(max_length=200,
@@ -78,6 +77,9 @@ class Article(models.Model):
     create_time = models.DateTimeField('create_time', auto_now_add=True)
     update_time = models.DateTimeField('update_time', auto_now=True)
 
+    def get_absolute_url(self):
+        return reverse('article-detail-view', args=(self.title,))
+
     def get_tags(self):
         tags_list = (self.tags or "").split(',')
         while '' in tags_list:
@@ -88,7 +90,7 @@ class Article(models.Model):
     class Meta:
         verbose_name_plural = verbose_name = 'article'
         ordering = ['rank', '-is_top', '-pub_time', '-create_time']
-        app_label = 'Blog Management'
+        app_label = 'tango_center'
 
     def __unicode__(self):
             return self.title
@@ -107,6 +109,6 @@ class Carousel(models.Model):
     class Meta:
         verbose_name_plural = verbose_name = 'carousel'
         ordering = ['-create_time']
-        app_label = 'Blog Management'
+        app_label = 'tango_center'
 
 
