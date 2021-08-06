@@ -1,4 +1,5 @@
 {% extends "blog/base.html" %}
+{% load title_filter %}
 
 {% block main %}
 
@@ -22,7 +23,7 @@
 
             <div id="article">
                 <div class="article-title">
-                    <h1>{{article.title}}</h1>
+                    <h1>{{article.title|change_url}}</h1>
                 </div>
                 <div class="article-tags">
                     {% for tag in article.get_tags%}

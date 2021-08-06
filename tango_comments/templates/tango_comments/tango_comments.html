@@ -1,3 +1,5 @@
+{% load title_filter %}
+
 <div id="anchor-quote"></div>
 <div class="well">
     <div class="vmaig-comment">
@@ -62,7 +64,7 @@
     $('#vmaig-comment-form').submit(function(){
         $.ajax({
             type:"POST",
-            url:"/comment/{{article.en_title}}",
+            url:"/comment/{{article.title|change_url}}",
             data:{"comment":$("#comment").val()},
             beforeSend:function(xhr){
                 xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));  

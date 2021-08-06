@@ -21,9 +21,9 @@ class CommentControl(View):
         if not user.is_authenticated:
             return HttpResponse("please login!", status=403)
 
-        en_title = self.kwargs.get('slug', '')
+        title = self.kwargs.get('slug', '')
         try:
-            article = ArticleModel.objects.get(en_title=en_title)
+            article = ArticleModel.objects.get(title=title)
         except ArticleModel.DoesNotExist:
             raise PermissionDenied
 

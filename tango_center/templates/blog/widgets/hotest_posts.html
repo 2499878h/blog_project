@@ -1,3 +1,4 @@
+{% load title_filter %}
 
 <div id="vmaig-hotest-posts">
     <div class="panel panel-vmaig">
@@ -12,7 +13,7 @@
         <ul id="hotest-post-list" class="list-group collapse in">
             {% for article in hot_article_list %}
                 <li class="list-group-item">
-                <span class="hotest-post-title"><a href="{% url 'article-detail-view' article.title %}">{{article.title}}</a> </span>
+                <span class="hotest-post-title"><a href="{% url 'article-detail-view' article.title|change_url %}">{{article.title}}</a> </span>
                 <span class="badge">{{article.view_times}}</span>
                 </li>
             {% endfor %}

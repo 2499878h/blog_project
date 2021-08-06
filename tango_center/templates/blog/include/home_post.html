@@ -1,5 +1,6 @@
+{% load title_filter %}
 {% url 'category-detail-view' post.category.name as category_url %}
-{% url 'article-detail-view' post.title as article_url %}
+{% url 'article-detail-view' post.title|change_url as article_url %}
 
 <div class="home-post well clearfix">
     <div class="post-title underline clearfix">

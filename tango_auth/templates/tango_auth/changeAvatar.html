@@ -92,9 +92,9 @@ $("#save-tx").click(function(){
 
     fd.append('file',blob);
     $.ajax({
-        url:"/usercontrol/changetx",
+        url:"/usercontrol/changeAvatar",
         type:"POST",
-        data:{"tx":canvas.toDataURL().split(',')[1]},
+        data:{"Avatar":canvas.toDataURL().split(',')[1]},
         beforeSend:function(xhr){
             xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));  
         },

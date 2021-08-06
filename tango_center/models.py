@@ -61,7 +61,7 @@ class Article(models.Model):
     category = models.ForeignKey(Category, verbose_name='category', on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=100, verbose_name='title')
     img = models.CharField(max_length=200,
-                           default='/static/img/article/avatar.jpg')
+                           default='/static/img/article/1.png')
     tags = models.CharField(max_length=200, null=True, blank=True,
                             verbose_name='tag', help_text='segment by comma')
     summary = models.TextField(verbose_name='summary')
@@ -78,6 +78,8 @@ class Article(models.Model):
     update_time = models.DateTimeField('update_time', auto_now=True)
 
     def get_absolute_url(self):
+        # tmp = self.title
+        # tmp = tmp.replace(' ', '-')
         return reverse('article-detail-view', args=(self.title,))
 
     def get_tags(self):

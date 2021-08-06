@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100, verbose_name='title')),
-                ('img', models.CharField(default='/static/img/article/avatar.jpg', max_length=200)),
+                ('img', models.CharField(default='/static/img/article/1.png', max_length=200)),
                 ('tags', models.CharField(blank=True, help_text='segment by comma', max_length=200, null=True, verbose_name='tag')),
                 ('summary', models.TextField(verbose_name='summary')),
                 ('content', models.TextField(verbose_name='content')),

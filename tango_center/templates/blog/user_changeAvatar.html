@@ -6,7 +6,6 @@
 {% url 'login-view' as login_url%}
 {% url 'user-view' 'changeAvatar' as changeAvatar_url %}
 {% url 'user-view' 'changepassword' as changepassword_url %}
-{% url 'user-view' 'notification' as notification_url %}
 
 <div style="height:40px;"></div>
 <div class="row">
@@ -15,20 +14,12 @@
             <img src="{{user.img}}" alt="" width="40">
             &nbsp;{{user.username}}
         </a>
-        <a href="{{changetx_url}}"class="list-group-item">
+        <a href="{{changeAvatar_url}}"class="list-group-item active">
             change avatar
             <span class="glyphicon glyphicon-chevron-right pull-right"></span>
         </a>
-        <a href="{{changepassword_url}}"class="list-group-item active">
+        <a href="{{changepassword_url}}"class="list-group-item">
             change password
-            <span class="glyphicon glyphicon-chevron-right pull-right"></span>
-        </a>
-        <a href="{{register_url}}r"class="list-group-item">
-            register
-            <span class="glyphicon glyphicon-chevron-right pull-right"></span>
-        </a>
-        <a href="{{login_url}}"class="list-group-item">
-            login
             <span class="glyphicon glyphicon-chevron-right pull-right"></span>
         </a>
     </div>

@@ -57,14 +57,11 @@ class ArticleView(BaseMixin, DetailView):
     slug_field = 'title'
 
     def get(self, request, *args, **kwargs):
-        # count read times
-        if 'HTTP_X_FORWARDED_FOR' in request.META:
-            ip = request.META['HTTP_X_FORWARDED_FOR']
-        else:
-            ip = request.META['REMOTE_ADDR']
-        self.cur_user_ip = ip
 
         title = self.kwargs.get('slug')
+
+        # replace - to space
+        title = title.replace('_', ' ')
 
         # add view tiems
         article = self.queryset.get(title=title)
@@ -76,6 +73,10 @@ class ArticleView(BaseMixin, DetailView):
     def get_context_data(self, **kwargs):
         # comments
         title = self.kwargs.get('slug', '')
+
+        # replace - to space
+        title = title.replace('_', ' ')
+
         kwargs['comment_list'] = \
             self.queryset.get(title=title).comment_set.all()
 
@@ -200,7 +201,6 @@ class CategoryView(BaseMixin, ListView):
 
 
 class UserView(BaseMixin, TemplateView):
-    # template_name = 'blog/user.html'
 
     def get(self, request, *args, **kwargs):
 
