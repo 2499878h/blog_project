@@ -8,7 +8,7 @@
 
 #vmaig-auth-login {
     max-width: 400px;
-    margin: 20px auto 20px;
+    margin: 60px auto 20px;
 }
 
 #vmaig-auth-login-form{
@@ -54,7 +54,7 @@
 
 #vmaig-auth-register {
     max-width: 500px;
-    margin: 20px auto 20px;
+    margin: 60px auto 20px;
 }
 
 #vmaig-auth-register .alert {

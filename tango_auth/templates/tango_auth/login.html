@@ -38,9 +38,11 @@
             url:"/usercontrol/login",
             data:{"username":$("#vmaig-auth-login-username").val(),"password":$("#vmaig-auth-login-password").val()},
             beforeSend:function(xhr){
+                debugger
                 xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));  
             },
             success:function(data,textStatus){
+                debugger
                 var errors = data["errors"];
                 if(errors.length==0){
                     location.replace("/"); 
